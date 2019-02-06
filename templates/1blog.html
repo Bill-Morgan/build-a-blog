@@ -2,8 +2,6 @@
 {% block content %}
     {% if post %}
         <p class='single_post'>{{post.post_txt}}</p>
-        <a href='/edit?id={{post.id}}'><button> Edit Post </button></a>
-        <a href='/deletepost?id={{post.id}}'><button> Delete Post </button></a>
     {% else %}
         <p>No posts yet.  Please add one!</p>
     {% endif %}

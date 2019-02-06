@@ -3,7 +3,6 @@
     {% if posts %}
         {% for each_post in posts %}
             <p class='post_title'><a href='/blog?id={{each_post.id}}'>{{each_post.title}}</a></p>
-            <p>{{each_post.post_datetime}}</p>
             <p class='post_txt'>{{each_post.post_txt}}</p>
         {% endfor %}
     {% else %}
