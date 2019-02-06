@@ -1,0 +1,17 @@
+.err {  color: red;
+        font-style: italic;}
+
+.del {  background-color: red;
+        color: white;}
+
+h1 {    text-align: center;}
+
+.post_title {   font-size: 25px;
+                font-weight: bold;}
+
+.single_post {  font-size: 20px;}
+
+.post_txt {     padding-bottom: 10px;
+                border-bottom-style: solid;
+                border-bottom-color: lightgray;
+                border-bottom-width: 3px;}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<form method='POST' >
+    <label for='title'>Edit title for your blog here:</label><br />
+    <input type='text' name='title' id='title' value='{{title}}' />
+    <p class='err'>{{title_error}} </p>
+    <label for='newpost'>Edit blog here:</label><br />
+    <textarea name='newpost' id='newpost'>{{newpost}}</textarea>
+    <p class='err'>{{blog_error}} </p>
+    <input type='hidden' name='id' value='{{id}}' />
+    <input type='hidden' name='datetime' value='{{datetime}}' />
+    <input type='submit' />
+</form>
+{% endblock %}
