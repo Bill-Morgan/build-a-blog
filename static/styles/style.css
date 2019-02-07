@@ -4,6 +4,11 @@
 .del {  background-color: red;
         color: white;}
 
+form.options {  border-style: solid;
+        border-color: black;
+        width: 300px;
+        padding: 10px;}
+
 h1 {    text-align: center;}
 
 .post_title {   font-size: 25px;

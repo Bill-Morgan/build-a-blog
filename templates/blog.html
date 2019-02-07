@@ -1,5 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
+    <form method='POST' class='options'>
+        <p> Display options:</p>
+        {% if session['sort_order'] == 'ASC' %}
+        <label>Assending 
+            <input type='radio' name="sort_order" value='ASC' checked />
+        </label>
+        <label>Decending 
+            <input type="radio" name="sort_order" value="DESC" />
+        </label>
+        {% else %}
+        <label>Assending
+            <input type='radio' name="sort_order" value='ASC' />
+        </label>
+        <label>Decending 
+            <input type="radio" name="sort_order" value='DESC' checked />
+        </label>
+        {% endif %}
+        <input type="submit" name='submit'>
+</form>
     {% if posts %}
         {% for each_post in posts %}
             <p class='post_title'><a href='/blog?id={{each_post.id}}'>{{each_post.title}}</a></p>

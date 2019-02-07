@@ -1,12 +1,13 @@
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template, session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-import cgi
+#import cgi
 
 app = Flask(__name__)
 app.config['DEBUG'] = True      # displays runtime errors in the browser, too
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://build-a-blog:blogpassword@localhost:8889/build-a-blog'
 app.config['SQLALCHEMY_ECHO'] = True
+app.secret_key='234rtgffserfbsy3g#$%T^'
 
 db = SQLAlchemy(app)
 
@@ -39,14 +40,12 @@ def editpost():
         title_error, blog_error = isvalidpost(title,post_txt)
         if (title_error or blog_error):
             return render_template('editpost.html', page_title='Edit a Blog Entry', title_error=title_error, blog_error=blog_error, title=title, newpost=post_txt, id=id)
-        new_blog_post = BlogPost(title, post_txt)
-        new_blog_post.post_datetime = post_datetime
-        db.session.add(new_blog_post)
+        edit_post = BlogPost.query.filter_by(id=id).first()
+        edit_post.title = title
+        edit_post.post_txt = post_txt
+        db.session.add(edit_post)
         db.session.commit()
-        del_old_post = BlogPost.query.filter_by(id=id).first()
-        db.session.delete(del_old_post)
-        db.session.commit()
-        return redirect('/blog?id={}'.format(new_blog_post.id))
+        return redirect('/blog?id={}'.format(edit_post.id))
     id = request.args.get('id')
     try:
         id = int(id)
@@ -90,8 +89,12 @@ def newpost():
         return redirect('/blog?id={}'.format(new_blog_post.id))
     return render_template('newpost.html', page_title='Add a Blog Entry', error=error)
 
-@app.route("/blog")
+@app.route("/blog", methods=['POST', 'GET'])
 def blog():
+    if not(session['sort_order']):
+        session['sort_order'] = 'DESC'
+    if request.method == 'POST':
+        session['sort_order'] = request.form['sort_order']
     id = request.args.get("id")
     if id:
         the_blogs = BlogPost.query.filter_by(id=id).first()
@@ -99,7 +102,9 @@ def blog():
             title=the_blogs.title
             return render_template('1blog.html', page_title=title, post=the_blogs)
         return redirect('/') # there was no db return with the requested id.
-    the_blogs = BlogPost.query.order_by('post_datetime DESC').all()
+    order_by_str = 'post_datetime ' + session['sort_order']
+    print('&&&&&&&&&&&&&&&&&&&&&&&&&&&& {}'.format(order_by_str))
+    the_blogs = BlogPost.query.order_by(order_by_str).all()
     return render_template('blog.html', page_title='Build a Blog', posts=the_blogs)
 
 @app.route("/")
